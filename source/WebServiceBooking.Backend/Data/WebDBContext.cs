@@ -24,24 +24,24 @@ namespace WebServiceBooking.Backend.Data
         }
 
         //Entities
-        DbSet<User> Users { get; set; }
-        DbSet<MyHotelRestaurant> MyHotelRestaurants { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<MyHotelRestaurant> MyHotelRestaurants { get; set; }
 
-        DbSet<Branch> Branches { get; set; }
+        public DbSet<Branch> Branches { get; set; }
 
-        DbSet<Venue> Venues { get; set; }
+        public DbSet<Venue> Venues { get; set; }
 
-        DbSet<Table> Tables { get; set; }
+        public DbSet<Table> Tables { get; set; }
 
-        DbSet<GroupItem> GroupItems { get; set; }
+        public DbSet<GroupItem> GroupItems { get; set; }
 
-        DbSet<Item> Items { get; set; }
+        public DbSet<Item> Items { get; set; }
 
-        DbSet<Unit> Units { get; set; }
+        public DbSet<Unit> Units { get; set; }
 
-        DbSet<Currency> Currencies { get; set; }
+        public DbSet<Currency> Currencies { get; set; }
 
-        DbSet<Booking> Bookings { get; set; }
+        public DbSet<Booking> Bookings { get; set; }
 
     }
 }

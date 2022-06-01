@@ -6,7 +6,7 @@ namespace WebServiceBooking.Data.Entities
 {
    public class MyHotelRestaurant
     {
-        public int HotelRestaurantID { get; set; }
+        public int Id { get; set; }
         public string HotelRestaurantCode { get; set; }
         public string HotelRestaurantName { get; set; }
         public string Address { get; set; }

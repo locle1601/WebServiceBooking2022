@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebServiceBooking.Backend.Data;
 
 namespace WebServiceBooking.Backend
 {
@@ -24,7 +25,9 @@ namespace WebServiceBooking.Backend
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            services.AddInfrastructure(Configuration);
+
+            services.AddControllers();
             services.AddRazorPages();
             services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" }));
         }
