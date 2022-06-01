@@ -14,7 +14,7 @@ namespace WebServiceBooking.Backend.Data
             if (configuration.GetValue<bool>("UseInMemoryDatabase"))
             {
                 services.AddDbContext<WebDBContext>(options =>
-                    options.UseInMemoryDatabase("BockingDB"));
+                    options.UseInMemoryDatabase("ServiceBookingDB"));
             }
             else
             {
