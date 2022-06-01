@@ -16,7 +16,7 @@ namespace WebServiceBooking.Backend.Data
         {
             var administratorRole = new IdentityRole("Administrator");
             var userRole = new IdentityRole("Member");
-
+            
             // tạo quyền  admin
             if (roleManager.Roles.All(r => r.Name != administratorRole.Name))
             {
@@ -42,18 +42,18 @@ namespace WebServiceBooking.Backend.Data
         public static async Task SeedSampleDataAsync(WebDBContext context)
         {
             // Seed, if necessary
-            if (!context.MyHotelRestaurants.Any())
-            {
-                context.MyHotelRestaurants.Add(new MyHotelRestaurant
-                {
-                    Id = 1,
-                    Address = " nha trang",
-                    HotelRestaurantCode = "56000",
-                    HotelRestaurantName = " resrant"
-                })  ;
+            //if (!context.MyHotelRestaurants.Any())
+            //{
+            //    context.MyHotelRestaurants.Add(new MyHotelRestaurant
+            //    {
+            //        Id = 1,
+            //        Address = " nha trang",
+            //        HotelRestaurantCode = "56000",
+            //        HotelRestaurantName = " resrant"
+            //    })  ;
 
-                await context.SaveChangesAsync();
-            }
+            //    await context.SaveChangesAsync();
+            //}
         }
 
     }
