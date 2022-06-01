@@ -24,7 +24,7 @@ namespace WebServiceBooking.Backend.Data
         }
 
         //Entities
-        public DbSet<User> Users { get; set; }
+        //public DbSet<User> Users { get; set; }
         public DbSet<MyHotelRestaurant> MyHotelRestaurants { get; set; }
 
         public DbSet<Branch> Branches { get; set; }

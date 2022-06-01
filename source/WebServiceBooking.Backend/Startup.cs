@@ -1,3 +1,4 @@
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -10,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebServiceBooking.Backend.Data;
+using WebServiceBooking.ViewModels.Contents;
 
 namespace WebServiceBooking.Backend
 {
@@ -26,8 +28,8 @@ namespace WebServiceBooking.Backend
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddInfrastructure(Configuration);
-
-            services.AddControllers();
+            services.AddControllersWithViews()
+            .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<RoleCreateRequestValidator>());
             services.AddRazorPages();
             services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" }));
         }
@@ -45,13 +47,13 @@ namespace WebServiceBooking.Backend
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
 
             app.UseAuthorization();
+            app.UseSwagger();
 
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1"));
 
