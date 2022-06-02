@@ -26,9 +26,13 @@ namespace WebServiceBooking.Data.Entities
 
         public int? MaxNumOfTable { get; set; }
 
-        [DataType("varchar(50)")]
-        public string UserID { get; set; }
+
+        public int? UserID { get; set; }
+
+        [DataType("Smalldatetime")]
         public DateTime CreateDate { get; set; }
+
+        [DataType("Smalldatetime")]
         public DateTime? LastModifiedDate { get; set; }
         //public MyHotelRestaurant MyHotelRestaurant { get; set; }
         //public Branch Branch { get; set; }

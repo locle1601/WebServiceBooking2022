@@ -16,6 +16,9 @@ namespace WebServiceBooking.Data.Entities
         [MaxLength(250)]
         public string BranchName { get; set; }
 
+        [DataType("varchar(20)")]
+        public string BranchCode { get; set; }
+
         [MaxLength(250)]
         public string Address { get; set; }
 

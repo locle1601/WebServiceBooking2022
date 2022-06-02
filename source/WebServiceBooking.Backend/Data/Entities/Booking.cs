@@ -8,7 +8,7 @@ using WebServiceBooking.Backend.Data.Entities;
 
 namespace WebServiceBooking.Data.Entities
 {
-    [Table("Categories")]
+    [Table("Bookings")]
     public class Booking
     {
         [Key]
@@ -28,15 +28,19 @@ namespace WebServiceBooking.Data.Entities
         public string BookingCode { get; set; }
 
         [Required]
+        [DataType("Datetime")]
         public DateTime FromDate { get; set; }
 
         [Required]
+        [DataType("Smalldatetime")]
         public DateTime FromTime { get; set; }
 
         [Required]
+        [DataType("Datetime")]
         public DateTime ToDate { get; set; }
 
         [Required]
+        [DataType("Smalldatetime")]
         public DateTime ToTime { get; set; }
 
         [Required]
@@ -52,13 +56,17 @@ namespace WebServiceBooking.Data.Entities
         [Column(TypeName = "nvarchar(500)")]
         public string Description { get; set; }
 
-        [DefaultValue(0)] // trang thai khách xác định đến
+        [DefaultValue(1)] // trang thai khách xác định đến
         public int StatusId { get; set; }
         public Status Status { get; set; }
 
-        [DataType("varchar(50)")]
-        public string UserID { get; set; }
+        [Required]
+        public int UserID { get; set; }
+
+        [DataType("Smalldatetime")]
         public DateTime CreateDate { get; set; }
+
+        [DataType("Smalldatetime")]
         public DateTime? LastModifiedDate { get; set; }
 
     }

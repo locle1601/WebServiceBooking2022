@@ -36,6 +36,10 @@ namespace WebServiceBooking.Backend.Data
         public DbSet<Unit> Units { get; set; }
         public DbSet<Venue> Venues { get; set; }
 
+        public DbSet<Employee> Employees { get; set; }
+        public DbSet<Department> Departments { get; set; }
+
+
 
 
 

@@ -10,8 +10,8 @@ using WebServiceBooking.Backend.Data;
 namespace WebServiceBooking.Backend.Migrations
 {
     [DbContext(typeof(WebDBContext))]
-    [Migration("20220601153405_CreateDB_initall_20220601LOC")]
-    partial class CreateDB_initall_20220601LOC
+    [Migration("20220602140910_UpdateDB_LOC")]
+    partial class UpdateDB_LOC
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -152,6 +152,80 @@ namespace WebServiceBooking.Backend.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("WebServiceBooking.Backend.Data.Entities.Department", b =>
+                {
+                    b.Property<int>("DepartmentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("DepartmentCode")
+                        .HasColumnType("nvarchar(250)")
+                        .HasMaxLength(250);
+
+                    b.Property<string>("DepartmentName")
+                        .HasColumnType("nvarchar(250)")
+                        .HasMaxLength(250);
+
+                    b.HasKey("DepartmentId");
+
+                    b.ToTable("Departments");
+                });
+
+            modelBuilder.Entity("WebServiceBooking.Backend.Data.Entities.Employee", b =>
+                {
+                    b.Property<int>("EmployeeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DateOfBirth")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Email1")
+                        .HasColumnType("int")
+                        .HasMaxLength(20);
+
+                    b.Property<int>("Email2")
+                        .HasColumnType("int")
+                        .HasMaxLength(20);
+
+                    b.Property<string>("EmployeeCode")
+                        .HasColumnType("nvarchar(20)")
+                        .HasMaxLength(20);
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<DateTime?>("LastModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("MidleName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<int>("Telephone1")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Telephone2")
+                        .HasColumnType("int");
+
+                    b.HasKey("EmployeeId");
+
+                    b.ToTable("Employees");
                 });
 
             modelBuilder.Entity("WebServiceBooking.Backend.Data.Entities.Status", b =>
@@ -314,14 +388,14 @@ namespace WebServiceBooking.Backend.Migrations
                     b.Property<DateTime>("ToTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("UserID")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("UserID")
+                        .HasColumnType("int");
 
                     b.HasKey("BookingId");
 
                     b.HasIndex("StatusId");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Bookings");
                 });
 
             modelBuilder.Entity("WebServiceBooking.Data.Entities.Branch", b =>
@@ -334,6 +408,9 @@ namespace WebServiceBooking.Backend.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(250)")
                         .HasMaxLength(250);
+
+                    b.Property<string>("BranchCode")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("BranchName")
                         .HasColumnType("nvarchar(250)")
@@ -367,8 +444,8 @@ namespace WebServiceBooking.Backend.Migrations
                     b.Property<DateTime?>("LastModifiedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("UserID")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("UserID")
+                        .HasColumnType("int");
 
                     b.HasKey("CurrencyID");
 
@@ -401,8 +478,8 @@ namespace WebServiceBooking.Backend.Migrations
                     b.Property<DateTime?>("LastModifiedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("UserID")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("UserID")
+                        .HasColumnType("int");
 
                     b.HasKey("GroupItemID");
 
@@ -443,8 +520,8 @@ namespace WebServiceBooking.Backend.Migrations
                     b.Property<int?>("UnitID")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserID")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("UserID")
+                        .HasColumnType("int");
 
                     b.Property<bool>("isOpenPrice")
                         .HasColumnType("bit");
@@ -545,8 +622,8 @@ namespace WebServiceBooking.Backend.Migrations
                     b.Property<int>("MyHotelRestaurantID")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserID")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("UserID")
+                        .HasColumnType("int");
 
                     b.Property<string>("VenueName")
                         .IsRequired()

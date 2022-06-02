@@ -24,9 +24,12 @@ namespace WebServiceBooking.Data.Entities
         [MaxLength(1000)]
         public string Description { get; set; }
 
-        [DataType("varchar(50)")]
-        public string UserID { get; set; }
+        public int? UserID { get; set; }
+
+        [DataType("Smalldatetime")]
         public DateTime CreateDate { get; set; }
+
+        [DataType("Smalldatetime")]
         public DateTime? LastModifiedDate { get; set; }
 
         public ICollection<Item> Items { get; set; }

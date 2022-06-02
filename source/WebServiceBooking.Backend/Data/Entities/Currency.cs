@@ -20,9 +20,13 @@ namespace WebServiceBooking.Data.Entities
         [DataType("varchar(5)")]
         public String CurrencyCode { get; set; }
 
-        [DataType("varchar(50)")]
-        public string UserID { get; set; }
+        public int? UserID { get; set; }
+
+        [DataType("Smalldatetime")]
         public DateTime CreateDate { get; set; }
+
+        [DataType("Smalldatetime")]
         public DateTime? LastModifiedDate { get; set; }
+
     }
 }

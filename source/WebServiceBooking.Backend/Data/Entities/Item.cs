@@ -36,9 +36,13 @@ namespace WebServiceBooking.Data.Entities
 
         //public int? SupplierID { get; set; }
 
-        [DataType("varchar(50)")]
-        public string UserID { get; set; }
+        [Required]
+        public int UserID { get; set; }
+
+        [DataType("Smalldatetime")]
         public DateTime CreateDate { get; set; }
+
+        [DataType("Smalldatetime")]
         public DateTime? LastModifiedDate { get; set; }
 
         //Foreign key for GroupItems
