@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebServiceBooking.Backend.Data;
 
-namespace WebServiceBooking.Backend.Migrations
+namespace WebServiceBooking.Backend.Persistence.Migrations
 {
     [DbContext(typeof(WebDBContext))]
-    partial class WebDBContextModelSnapshot : ModelSnapshot
+    [Migration("20220602133405_DbMigration")]
+    partial class DbMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -152,80 +154,6 @@ namespace WebServiceBooking.Backend.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("WebServiceBooking.Backend.Data.Entities.Department", b =>
-                {
-                    b.Property<int>("DepartmentId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("DepartmentCode")
-                        .HasColumnType("nvarchar(250)")
-                        .HasMaxLength(250);
-
-                    b.Property<string>("DepartmentName")
-                        .HasColumnType("nvarchar(250)")
-                        .HasMaxLength(250);
-
-                    b.HasKey("DepartmentId");
-
-                    b.ToTable("Departments");
-                });
-
-            modelBuilder.Entity("WebServiceBooking.Backend.Data.Entities.Employee", b =>
-                {
-                    b.Property<int>("EmployeeId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("DateOfBirth")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Email1")
-                        .HasColumnType("int")
-                        .HasMaxLength(20);
-
-                    b.Property<int>("Email2")
-                        .HasColumnType("int")
-                        .HasMaxLength(20);
-
-                    b.Property<string>("EmployeeCode")
-                        .HasColumnType("nvarchar(20)")
-                        .HasMaxLength(20);
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.Property<DateTime?>("LastModifiedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("MidleName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.Property<int>("Telephone1")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Telephone2")
-                        .HasColumnType("int");
-
-                    b.HasKey("EmployeeId");
-
-                    b.ToTable("Employees");
-                });
-
             modelBuilder.Entity("WebServiceBooking.Backend.Data.Entities.Status", b =>
                 {
                     b.Property<int>("StatusId")
@@ -272,9 +200,6 @@ namespace WebServiceBooking.Backend.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
-
-                    b.Property<int>("EmployeeId")
-                        .HasColumnType("int");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -389,14 +314,14 @@ namespace WebServiceBooking.Backend.Migrations
                     b.Property<DateTime>("ToTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UserID")
-                        .HasColumnType("int");
+                    b.Property<string>("UserID")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("BookingId");
 
                     b.HasIndex("StatusId");
 
-                    b.ToTable("Bookings");
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("WebServiceBooking.Data.Entities.Branch", b =>
@@ -409,9 +334,6 @@ namespace WebServiceBooking.Backend.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(250)")
                         .HasMaxLength(250);
-
-                    b.Property<string>("BranchCode")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("BranchName")
                         .HasColumnType("nvarchar(250)")
@@ -445,8 +367,8 @@ namespace WebServiceBooking.Backend.Migrations
                     b.Property<DateTime?>("LastModifiedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("UserID")
-                        .HasColumnType("int");
+                    b.Property<string>("UserID")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("CurrencyID");
 
@@ -479,8 +401,8 @@ namespace WebServiceBooking.Backend.Migrations
                     b.Property<DateTime?>("LastModifiedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("UserID")
-                        .HasColumnType("int");
+                    b.Property<string>("UserID")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("GroupItemID");
 
@@ -521,8 +443,8 @@ namespace WebServiceBooking.Backend.Migrations
                     b.Property<int?>("UnitID")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserID")
-                        .HasColumnType("int");
+                    b.Property<string>("UserID")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("isOpenPrice")
                         .HasColumnType("bit");
@@ -623,8 +545,8 @@ namespace WebServiceBooking.Backend.Migrations
                     b.Property<int>("MyHotelRestaurantID")
                         .HasColumnType("int");
 
-                    b.Property<int?>("UserID")
-                        .HasColumnType("int");
+                    b.Property<string>("UserID")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("VenueName")
                         .IsRequired()

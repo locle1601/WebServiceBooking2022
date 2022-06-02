@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
@@ -16,7 +17,7 @@ namespace WebServiceBooking.Backend.Data
         {
             var administratorRole = new IdentityRole("Administrator");
             var userRole = new IdentityRole("Member");
-            
+
             // tạo quyền  admin
             if (roleManager.Roles.All(r => r.Name != administratorRole.Name))
             {
@@ -30,14 +31,26 @@ namespace WebServiceBooking.Backend.Data
             }
 
             var administrator = new User { UserName = "administrator@localhost", Email = "administrator@localhost" };
-            // them user 
-            if (userManager.Users.All(u => u.UserName != administrator.UserName))
+
+            if (!userManager.Users.Any())
             {
-                await userManager.CreateAsync(administrator, "123456");
-                await userManager.AddToRolesAsync(administrator, new[] { administratorRole.Name });
-          
+                var result = await userManager.CreateAsync(new User
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    UserName = "admin",
+                    FirstName = "admin",
+                    LastName = "1",
+                    Email = "tedu.international@gmail.com",
+                    LockoutEnabled = false
+                }, "Admin@123");
+                if (result.Succeeded)
+                {
+                    var user = await userManager.FindByNameAsync("admin");
+                    await userManager.AddToRoleAsync(user, administratorRole.Name);
+                }
+
+
             }
-    
         }
         public static async Task SeedSampleDataAsync(WebDBContext context)
         {
