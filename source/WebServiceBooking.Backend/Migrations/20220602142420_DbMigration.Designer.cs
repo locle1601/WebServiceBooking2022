@@ -10,8 +10,8 @@ using WebServiceBooking.Backend.Data;
 namespace WebServiceBooking.Backend.Migrations
 {
     [DbContext(typeof(WebDBContext))]
-    [Migration("20220602140910_UpdateDB_LOC")]
-    partial class UpdateDB_LOC
+    [Migration("20220602142420_DbMigration")]
+    partial class DbMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -274,6 +274,9 @@ namespace WebServiceBooking.Backend.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
 
                     b.Property<string>("FirstName")
                         .IsRequired()

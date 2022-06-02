@@ -40,4 +40,8 @@
     <ProjectReference Include="..\WebServiceBooking.ViewModels\WebServiceBooking.ViewModels.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>

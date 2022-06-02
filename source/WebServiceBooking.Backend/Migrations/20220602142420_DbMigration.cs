@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace WebServiceBooking.Backend.Persistence.Migrations
+namespace WebServiceBooking.Backend.Migrations
 {
     public partial class DbMigration : Migration
     {
@@ -43,6 +43,7 @@ namespace WebServiceBooking.Backend.Persistence.Migrations
                     FirstName = table.Column<string>(maxLength: 50, nullable: false),
                     LastName = table.Column<string>(maxLength: 50, nullable: false),
                     Dob = table.Column<DateTime>(nullable: false),
+                    EmployeeId = table.Column<int>(nullable: false),
                     CreateDate = table.Column<DateTime>(nullable: false),
                     LastModifiedDate = table.Column<DateTime>(nullable: true)
                 },
@@ -58,6 +59,7 @@ namespace WebServiceBooking.Backend.Persistence.Migrations
                     BranchID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     BranchName = table.Column<string>(maxLength: 250, nullable: true),
+                    BranchCode = table.Column<string>(nullable: true),
                     Address = table.Column<string>(maxLength: 250, nullable: true),
                     MyHotelRestaurantID = table.Column<int>(nullable: false)
                 },
@@ -74,13 +76,50 @@ namespace WebServiceBooking.Backend.Persistence.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CurrencyName = table.Column<string>(nullable: false),
                     CurrencyCode = table.Column<string>(nullable: true),
-                    UserID = table.Column<string>(nullable: true),
+                    UserID = table.Column<int>(nullable: true),
                     CreateDate = table.Column<DateTime>(nullable: false),
                     LastModifiedDate = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Currencies", x => x.CurrencyID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Departments",
+                columns: table => new
+                {
+                    DepartmentId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DepartmentName = table.Column<string>(maxLength: 250, nullable: true),
+                    DepartmentCode = table.Column<string>(maxLength: 250, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Departments", x => x.DepartmentId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Employees",
+                columns: table => new
+                {
+                    EmployeeId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    EmployeeCode = table.Column<string>(maxLength: 20, nullable: true),
+                    FirstName = table.Column<string>(maxLength: 50, nullable: false),
+                    MidleName = table.Column<string>(maxLength: 50, nullable: false),
+                    LastName = table.Column<string>(maxLength: 50, nullable: false),
+                    DateOfBirth = table.Column<string>(nullable: true),
+                    Telephone1 = table.Column<int>(nullable: false),
+                    Telephone2 = table.Column<int>(nullable: false),
+                    Email1 = table.Column<int>(maxLength: 20, nullable: false),
+                    Email2 = table.Column<int>(maxLength: 20, nullable: false),
+                    CreateDate = table.Column<DateTime>(nullable: false),
+                    LastModifiedDate = table.Column<DateTime>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Employees", x => x.EmployeeId);
                 });
 
             migrationBuilder.CreateTable(
@@ -92,7 +131,7 @@ namespace WebServiceBooking.Backend.Persistence.Migrations
                     GroupItemCode = table.Column<string>(maxLength: 8, nullable: true),
                     GroupItemName = table.Column<string>(maxLength: 500, nullable: false),
                     Description = table.Column<string>(maxLength: 1000, nullable: true),
-                    UserID = table.Column<string>(nullable: true),
+                    UserID = table.Column<int>(nullable: true),
                     CreateDate = table.Column<DateTime>(nullable: false),
                     LastModifiedDate = table.Column<DateTime>(nullable: true)
                 },
@@ -170,7 +209,7 @@ namespace WebServiceBooking.Backend.Persistence.Migrations
                     VenueName = table.Column<string>(maxLength: 500, nullable: false),
                     DescriptionLocation = table.Column<string>(maxLength: 500, nullable: true),
                     MaxNumOfTable = table.Column<int>(nullable: true),
-                    UserID = table.Column<string>(nullable: true),
+                    UserID = table.Column<int>(nullable: true),
                     CreateDate = table.Column<DateTime>(nullable: false),
                     LastModifiedDate = table.Column<DateTime>(nullable: true)
                 },
@@ -297,7 +336,7 @@ namespace WebServiceBooking.Backend.Persistence.Migrations
                     SalePrice = table.Column<decimal>(nullable: false),
                     CurrencyID = table.Column<int>(nullable: true),
                     UnitID = table.Column<int>(nullable: true),
-                    UserID = table.Column<string>(nullable: true),
+                    UserID = table.Column<int>(nullable: false),
                     CreateDate = table.Column<DateTime>(nullable: false),
                     LastModifiedDate = table.Column<DateTime>(nullable: true),
                     GroupItemID = table.Column<int>(nullable: false)
@@ -314,7 +353,7 @@ namespace WebServiceBooking.Backend.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Categories",
+                name: "Bookings",
                 columns: table => new
                 {
                     BookingId = table.Column<int>(nullable: false)
@@ -332,15 +371,15 @@ namespace WebServiceBooking.Backend.Persistence.Migrations
                     NumNotPay = table.Column<int>(nullable: false),
                     Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     StatusId = table.Column<int>(nullable: false),
-                    UserID = table.Column<string>(nullable: true),
+                    UserID = table.Column<int>(nullable: false),
                     CreateDate = table.Column<DateTime>(nullable: false),
                     LastModifiedDate = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Categories", x => x.BookingId);
+                    table.PrimaryKey("PK_Bookings", x => x.BookingId);
                     table.ForeignKey(
-                        name: "FK_Categories_Status_StatusId",
+                        name: "FK_Bookings_Status_StatusId",
                         column: x => x.StatusId,
                         principalTable: "Status",
                         principalColumn: "StatusId",
@@ -387,8 +426,8 @@ namespace WebServiceBooking.Backend.Persistence.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Categories_StatusId",
-                table: "Categories",
+                name: "IX_Bookings_StatusId",
+                table: "Bookings",
                 column: "StatusId");
 
             migrationBuilder.CreateIndex(
@@ -415,13 +454,19 @@ namespace WebServiceBooking.Backend.Persistence.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Bookings");
+
+            migrationBuilder.DropTable(
                 name: "Branches");
 
             migrationBuilder.DropTable(
-                name: "Categories");
+                name: "Currencies");
 
             migrationBuilder.DropTable(
-                name: "Currencies");
+                name: "Departments");
+
+            migrationBuilder.DropTable(
+                name: "Employees");
 
             migrationBuilder.DropTable(
                 name: "Items");
