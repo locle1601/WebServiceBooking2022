@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace WebServiceBooking.Backend.Migrations
+namespace WebServiceBooking.Backend.Persistence.Migrations
 {
-    public partial class CreateDB_initall_20220601LOC : Migration
+    public partial class DbMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

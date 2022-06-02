@@ -3,17 +3,15 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebServiceBooking.Backend.Data;
 
-namespace WebServiceBooking.Backend.Migrations
+namespace WebServiceBooking.Backend.Persistence.Migrations
 {
     [DbContext(typeof(WebDBContext))]
-    [Migration("20220601153405_CreateDB_initall_20220601LOC")]
-    partial class CreateDB_initall_20220601LOC
+    partial class WebDBContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
