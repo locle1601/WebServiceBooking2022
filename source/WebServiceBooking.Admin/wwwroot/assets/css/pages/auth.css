@@ -1,0 +1,92 @@
+body {
+    background-color: #fff;
+}
+
+#auth {
+    background: url(../../../assets/images/bas.jpg), linear-gradient(90deg, #2d499d, #3f5491);
+    height: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    overflow-x: hidden;
+}
+#auth #auth-right {
+    padding: 5rem 8rem;
+}
+
+#auth #auth-left {
+        backdrop-filter: blur(10px);
+        box-shadow: 2px 0 30px 0 rgb(0 0 0 / 7%);
+        padding: 5rem 8rem;
+    }
+
+#auth #auth-left .auth-title {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+}
+
+#auth #auth-left .auth-subtitle {
+    color: #a8aebb;
+    font-size: 1.7rem;
+    line-height: 2.5rem;
+}
+
+#auth #auth-left .auth-logo {
+    margin-bottom: 7rem;
+}
+
+#auth #auth-left .auth-logo img {
+    height: 2rem;
+}
+
+@media screen and (max-width: 767px) {
+    #auth #auth-left {
+        padding: 5rem;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    #auth #auth-left {
+        padding: 5rem 3rem;
+    }
+}
+
+body.theme-dark #auth-right {
+    background: url(../../../assets/images/bas.jpg), linear-gradient(90deg, #2d499d, #3f5491);
+    height: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+#auth #Forgot {
+    backdrop-filter: blur(10px);
+    box-shadow: 2px 0 30px 0 rgb(0 0 0 / 7%);
+    padding: 5rem 8rem;
+}
+
+    #auth #Forgot .Forgot-title {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+    }
+    #auth #Forgot .Forgot-subtitle {
+        color: #a8aebb;
+        font-size: 1.7rem;
+        line-height: 2.5rem;
+    }
+    #auth #Forgot .Forgot-logo {
+        margin-bottom: 7rem;
+    }
+    #auth #Forgot .Forgot-logo img {
+        height: 2rem;
+    }
+@media screen and (max-width: 767px) {
+    #auth #Forgot {
+        padding: 5rem;
+    }
+}
+@media screen and (max-width: 576px) {
+    #auth #Forgot {
+        padding: 5rem 3rem;
+    }
+}
