@@ -2,7 +2,7 @@
     ViewData["Title"] = "Login";
 }
 
-<div id="auth"> 
+
 <div class="row h-100">
     <div class="col-lg-5 col-12">
         <div id="auth-left">
@@ -12,9 +12,8 @@
                     Services Booking
                 </a>
             </div>
-            <h1 class="auth-title">Log in.</h1>
+            <h1 style="font-size: 4rem; margin-bottom: 1.5rem; color: #425CBA">Log in.</h1>
             <p class="auth-subtitle mb-5">Log in with your data that you entered during registration.</p>
-
             <form action="index.html">
                 <div class="form-group position-relative has-icon-left mb-4">
                     <input type="text" class="form-control form-control-xl" placeholder="Username">
@@ -30,22 +29,36 @@
                 </div>
                 <div class="form-check form-check-lg d-flex align-items-end">
                     <input class="form-check-input me-2" type="checkbox" value="" id="flexCheckDefault">
-                    <label class="form-check-label text-gray-600" for="flexCheckDefault">
+                    <label style="color:#a8aebb" class="form-check-label text-600" for="flexCheckDefault">
                         Keep me logged in
                     </label>
                 </div>
                 <button class="btn btn-primary btn-block btn-lg shadow-lg mt-5">Log in</button>
             </form>
             <div class="text-center mt-5 text-lg fs-4">
-                <p class="text-gray-600">Don't have an account? <strong>@Html.ActionLink("Sign up","Index","Register")</strong>.</p>
+@*                <p class="text-gray-600">Don't have an account? <strong>@Html.ActionLink("Sign up","Index","Register")</strong>.</p>*@
                 <p> <strong>@Html.ActionLink("Forgot password?","Index","Forgotpassword")</strong>.</p>
             </div>
         </div>
     </div>
-    <div class="col-lg-7 d-none d-lg-block">
-        <div id="auth-right">
+    <div class="col-lg-8 d-none d-lg-block">
 
-        </div>
     </div>
-</div>
+    </div>
+@*    <div id="auth-right">
+        
+    </div>*@
+         @*slide picture*@
+            <ul class="slideshow">
+              <li><span>Image 01</span>
+                <div>
+                    <h3 class="namehotel">THE AN'NAM</h3>
+                </div>  
+              </li>
+              <li><span>Image 02</span></li>
+              <li><span>Image 03</span></li>
+              <li><span>Image 04</span></li>
+              <li><span>Image 05</span></li>
+              <li><span>Image 06</span></li>
+        </ul>
 </div>
