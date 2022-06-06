@@ -1,15 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.32002.261
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32526.322
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebServiceBooking.Backend", "source\WebServiceBooking.Backend\WebServiceBooking.Backend.csproj", "{D97B7ACF-50EE-4202-A098-F3259B303D39}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebServiceBooking.Backend", "source\WebServiceBooking.Backend\WebServiceBooking.Backend.csproj", "{D97B7ACF-50EE-4202-A098-F3259B303D39}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebServiceBooking.Guest", "source\WebServiceBooking.Guest\WebServiceBooking.Guest.csproj", "{2D330A4B-1351-4116-B2B9-7464DF2C9736}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebServiceBooking.Guest", "source\WebServiceBooking.Guest\WebServiceBooking.Guest.csproj", "{2D330A4B-1351-4116-B2B9-7464DF2C9736}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebServiceBooking.Admin", "source\WebServiceBooking.Admin\WebServiceBooking.Admin.csproj", "{5131D19C-01D6-4E4F-8BE4-3D230EF85575}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebServiceBooking.Admin", "source\WebServiceBooking.Admin\WebServiceBooking.Admin.csproj", "{5131D19C-01D6-4E4F-8BE4-3D230EF85575}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebServiceBooking.ViewModels", "source\WebServiceBooking.ViewModels\WebServiceBooking.ViewModels.csproj", "{77BA2FFF-B5BB-4888-BFB7-18B48E05104B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebServiceBooking.ViewModels", "source\WebServiceBooking.ViewModels\WebServiceBooking.ViewModels.csproj", "{77BA2FFF-B5BB-4888-BFB7-18B48E05104B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4F361B05-63EA-4822-BAE6-91653B05D1D1}"
 	ProjectSection(SolutionItems) = preProject

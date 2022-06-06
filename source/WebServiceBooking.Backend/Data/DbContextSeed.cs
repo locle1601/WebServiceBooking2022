@@ -37,10 +37,10 @@ namespace WebServiceBooking.Backend.Data
                 var result = await userManager.CreateAsync(new User
                 {
                     Id = Guid.NewGuid().ToString(),
-                    UserName = "admin",
+                    UserName = administrator.UserName,
                     FirstName = "admin",
                     LastName = "1",
-                    Email = "tedu.international@gmail.com",
+                    Email = administrator.Email,
                     LockoutEnabled = false
                 }, "Admin@123");
                 if (result.Succeeded)
