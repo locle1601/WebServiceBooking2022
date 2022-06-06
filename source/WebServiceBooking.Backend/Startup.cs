@@ -29,7 +29,7 @@ namespace WebServiceBooking.Backend
         {
             services.AddInfrastructure(Configuration);
             services.AddControllersWithViews()
-            .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<RoleCreateRequestValidator>());
+            .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<RoleCreateRequestValidator>()); // AddFluentValidation
             services.AddRazorPages();
             services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" }));
         }

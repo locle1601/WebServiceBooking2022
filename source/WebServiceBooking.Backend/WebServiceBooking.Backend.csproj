@@ -14,6 +14,12 @@
   <ItemGroup>
     <Compile Remove="Migrations\20220602140315_Fix_UpdateDB_LOC.cs" />
     <Compile Remove="Migrations\20220602140315_Fix_UpdateDB_LOC.Designer.cs" />
+    <Compile Remove="Migrations\20220604121227_update_DB_ID.cs" />
+    <Compile Remove="Migrations\20220604121227_update_DB_ID.Designer.cs" />
+    <Compile Remove="Migrations\20220604121604_update_DB_ID.cs" />
+    <Compile Remove="Migrations\20220604121604_update_DB_ID.Designer.cs" />
+    <Compile Remove="Migrations\20220604122323_updateDB_id.cs" />
+    <Compile Remove="Migrations\20220604122323_updateDB_id.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -31,6 +37,9 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Octokit" Version="0.51.0" />
+    <PackageReference Include="Refit" Version="6.3.2" />
     <PackageReference Include="Serilog" Version="2.11.0" />
     <PackageReference Include="Serilog.Sinks.Console" Version="4.0.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.2.1" />
@@ -38,10 +47,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\WebServiceBooking.ViewModels\WebServiceBooking.ViewModels.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>
