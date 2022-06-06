@@ -20,6 +20,8 @@ namespace WebServiceBooking.Backend.Controllers
         {
             this._context = context;
         }
+
+        [HttpPost]
         public async Task<IActionResult> PostMyHotelRestaurant(MyHotelRestaurantCreateRequest request)
         {
             var MyHotelRestaurant = new MyHotelRestaurant()
