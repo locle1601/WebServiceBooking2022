@@ -9,20 +9,20 @@ using System.Threading.Tasks;
 
 namespace WebServiceBooking.Backend.Data
 {
-    public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<WebDBContext>
+    public class DesignTimeDbContextFactory ///: IDesignTimeDbContextFactory<WebDBContext>
     {
-        public WebDBContext CreateDbContext(string[] args)
-        {
-            var environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-            IConfigurationRoot configuration = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json")
-                .AddJsonFile($"appsettings.{environmentName}.json")
-                .Build();
-            var builder = new DbContextOptionsBuilder<WebDBContext>();
-            var connectionString = configuration.GetConnectionString("DefaultConnection");
-            builder.UseSqlServer(connectionString);
-            return new WebDBContext(builder.Options);
-        }
+        //public WebDBContext CreateDbContext(string[] args)
+        //{
+        //    var environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+        //    IConfigurationRoot configuration = new ConfigurationBuilder()
+        //        .SetBasePath(Directory.GetCurrentDirectory())
+        //        .AddJsonFile("appsettings.json")
+        //        .AddJsonFile($"appsettings.{environmentName}.json")
+        //        .Build();
+        //    var builder = new DbContextOptionsBuilder<WebDBContext>();
+        //    var connectionString = configuration.GetConnectionString("DefaultConnection");
+        //    builder.UseSqlServer(connectionString);
+        //    return new WebDBContext(builder.Options);
+        //}
     }
 }

@@ -22,7 +22,7 @@ namespace WebServiceBooking.Backend.Data.Entities
         [Required]
         public DateTime Dob { get; set; }
 
-        public int EmployeeId { get; set; }
+   
          
 
         [Required]

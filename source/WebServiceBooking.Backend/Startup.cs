@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -14,6 +15,10 @@ using System.Threading.Tasks;
 using WebServiceBooking.Backend.Data;
 using WebServiceBooking.Backend.Services;
 using WebServiceBooking.ViewModels.Contents;
+using NSwag;
+using NSwag.Generation.Processors.Security;
+using OpenApiSecurityScheme = NSwag.OpenApiSecurityScheme;
+using WebServiceBooking.Backend.Common;
 
 namespace WebServiceBooking.Backend
 {
@@ -32,35 +37,58 @@ namespace WebServiceBooking.Backend
             services.AddInfrastructure(Configuration);
             services.AddControllersWithViews()
             .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<RoleCreateRequestValidator>());
-            services.SetupIdentityServer();
-       
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "backend API", Version = "v1" });
 
-                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-                {
-                    Type = SecuritySchemeType.OAuth2,
-                    Flows = new OpenApiOAuthFlows
-                    {
-                        Implicit = new OpenApiOAuthFlow
-                        {
-                            AuthorizationUrl = new Uri("https://localhost:5000/connect/authorize"),
-                            Scopes = new Dictionary<string, string> { { "api.Service", "Service backend API" } }
-                        },
-                    },
-                });
-                c.AddSecurityRequirement(new OpenApiSecurityRequirement
-                {
-                    {
-                        new OpenApiSecurityScheme
-                        {
-                            Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
-                        },
-                        new List<string>{ "api.Service" }
-                    }
-                });
+            services.AddSingleton<ICurrentUserService, CurrentUserService>();
+            services.SetupIdentityServer();
+            services.AddHttpContextAccessor();
+
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
             });
+
+            services.AddOpenApiDocument(configure =>
+            {
+                configure.Title = "CleanArchitecture API";
+                configure.AddSecurity("JWT", Enumerable.Empty<string>(), new OpenApiSecurityScheme
+                {
+                    Type = OpenApiSecuritySchemeType.ApiKey,
+                    Name = "Authorization",
+                    In = OpenApiSecurityApiKeyLocation.Header,
+                    Description = "Type into the textbox: Bearer {your JWT token}."
+                });
+
+                configure.OperationProcessors.Add(new AspNetCoreOperationSecurityScopeProcessor("JWT"));
+            });
+
+            //services.AddSwaggerGen(c =>
+            //{
+            //    c.SwaggerDoc("v1", new OpenApiInfo { Title = "backend API", Version = "v1" });
+
+            //    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            //    {
+            //        Type = SecuritySchemeType.OAuth2,
+            //        Flows = new OpenApiOAuthFlows
+            //        {
+            //            Implicit = new OpenApiOAuthFlow
+            //            {
+            //                AuthorizationUrl = new Uri("https://localhost:5000/connect/authorize"),
+            //                Scopes = new Dictionary<string, string> { { "api.Service", "Service backend API" } }
+            //            },
+            //        },
+            //    });
+            //    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+            //    {
+            //        {
+            //            new OpenApiSecurityScheme
+            //            {
+            //                Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
+            //            },
+            //            new List<string>{ "api.Service" }
+            //        }
+            //    });
+            //});
+            services.AddRazorPages();
             services.AddTransient<IEmailSender, EmailSenderService>();
         }
 
@@ -77,33 +105,50 @@ namespace WebServiceBooking.Backend
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-            app.UseStaticFiles();
-
-            app.UseIdentityServer();
-
-            app.UseAuthentication();
-
             app.UseHttpsRedirection();
+            app.UseStaticFiles();
+       
+
+            app.UseSwaggerUi3(settings =>
+            {
+                settings.Path = "/api";
+                settings.DocumentPath = "/api/specification.json";
+            });
 
             app.UseRouting();
 
+            app.UseAuthentication();
+            app.UseIdentityServer();
             app.UseAuthorization();
-
-            //app.UseCors(KspSpecificOrigins);
-
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapDefaultControllerRoute();
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
 
-            app.UseSwagger();
+            //app.UseSpa(spa =>
+            //{
+            //    // To learn more about options for serving an Angular SPA from ASP.NET Core,
+            //    // see https://go.microsoft.com/fwlink/?linkid=864501
 
-            app.UseSwaggerUI(c =>
-            {
-                c.OAuthClientId("swagger");
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Service backend API V1");
-            });
+            //    spa.Options.SourcePath = "ClientApp";
+
+            //    if (env.IsDevelopment())
+            //    {
+            //        //spa.UseAngularCliServer(npmScript: "start");
+            //        spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
+            //    }
+            //});
+
+            //app.UseSwagger();
+
+            //app.UseSwaggerUI(c =>
+            //{
+            //    c.OAuthClientId("swagger");
+            //    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Service backend API V1");
+            //});
         }
     }
 }

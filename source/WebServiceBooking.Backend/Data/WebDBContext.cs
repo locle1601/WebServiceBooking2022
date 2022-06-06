@@ -2,18 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using IdentityServer4.EntityFramework.Options;
+using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using WebServiceBooking.Backend.Data.Entities;
 using WebServiceBooking.Data.Entities;
 
 
 namespace WebServiceBooking.Backend.Data
 {
-    public class WebDBContext : IdentityDbContext<User>
+    public class WebDBContext : ApiAuthorizationDbContext<User>
     {
-        public WebDBContext(DbContextOptions options) : base(options)
+        public WebDBContext(DbContextOptions options, IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
         {
 
         }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -10,6 +11,9 @@ using WebServiceBooking.ViewModels.Contents;
 
 namespace WebServiceBooking.Backend.Controllers
 {
+
+
+    [Authorize]
     public class UsersController : BaseController
     {
         private readonly UserManager<User> _userManager;
