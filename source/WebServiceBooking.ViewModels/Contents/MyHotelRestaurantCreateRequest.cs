@@ -12,3 +12,5 @@ namespace WebServiceBooking.ViewModels.Contents
         public string Address { get; set; }
     }
 }
+
+

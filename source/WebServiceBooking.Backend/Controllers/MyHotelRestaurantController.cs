@@ -15,14 +15,16 @@ namespace WebServiceBooking.Backend.Controllers
 {
     public class MyHotelRestaurantController : BaseController
     {
-        private readonly WebDBContext _context;
-        MyHotelRestaurantController(WebDBContext context)
+       private readonly WebDBContext _context;
+       public MyHotelRestaurantController(WebDBContext context)
         {
-            this._context = context;
+            _context = context;
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostMyHotelRestaurant(MyHotelRestaurantCreateRequest request)
+       // [ClaimRequirement(FunctionCode.CONTENT_CATEGORY, CommandCode.CREATE)]
+        //[ApiValidationFilter]
+        public async Task<IActionResult> PostMyHotelRestaurant([FromBody] MyHotelRestaurantCreateRequest request)
         {
             var MyHotelRestaurant = new MyHotelRestaurant()
             {
@@ -35,12 +37,23 @@ namespace WebServiceBooking.Backend.Controllers
             var result = await _context.SaveChangesAsync();
             if (result > 0)
             {
-                return CreatedAtAction(nameof(GetById), new { id = MyHotelRestaurant.Id }, request); // khi tao xong thi goi toi phuong thuc "GetbyID
+                return CreatedAtAction(nameof(GetAllMyHotelRestaurants), request);
+                //return CreatedAtAction(nameof(GetById), new { id = MyHotelRestaurant.Id }, request); // khi tao xong thi goi toi phuong thuc "GetbyID
             }
             else
             {
                 return BadRequest();
             }
+        }
+        // GET ALL
+        [HttpGet]
+        public async Task<IActionResult> GetAllMyHotelRestaurants()
+        {
+            var hotel = await _context.MyHotelRestaurants.ToListAsync();
+
+            var hotelVm = hotel.Select(c => MyHotelRestaurantVm(c)).ToList();
+
+            return Ok(hotelVm);
         }
 
         // GET 
@@ -62,15 +75,7 @@ namespace WebServiceBooking.Backend.Controllers
             return Ok(MyHotelRestaurantVm);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetAllMyHotelRestaurants()
-        {
-            var hotel = await _context.MyHotelRestaurants.ToListAsync();
 
-            var hotelVm = hotel.Select(c => MyHotelRestaurantVm(c)).ToList();
-
-            return Ok(hotelVm);
-        }
 
         //PUT
         [HttpPut("{id}")]

@@ -24,6 +24,7 @@ namespace WebServiceBooking.Data.Entities
 
         [Required]
         public int MyHotelRestaurantID { get; set; }
+        public int Id { get; internal set; }
         //public MyHotelRestaurant MyHotelRestaurant { get; set; }
         //public ICollection<Venue> Venues { get; set; }
     }
