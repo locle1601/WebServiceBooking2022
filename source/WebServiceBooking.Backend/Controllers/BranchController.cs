@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using KnowledgeSpace.BackendServer.Helpers;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -59,7 +60,55 @@ namespace WebServiceBooking.Backend.Controllers
             return Ok(brVm);
 
         }
+        //PUT
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutBranch(int id, [FromBody] BranchCreateRequest request)
+        {
+            var branch = await _context.Branches.FindAsync(id);
+            if (id == null)
+                return NotFound(new ApiNotFoundResponse($" Your Branch: id = {id} is not found")); // 400
 
+            branch.Id = request.BranchID;
+            branch.BranchCode = request.BranchCode;
+            branch.BranchName = request.BranchName;
+            branch.Address = request.Address;
+
+            _context.Branches.Update(branch);
+
+            var result = await _context.SaveChangesAsync();
+            if (result > 0)
+            {
+                return CreatedAtAction(nameof(GetAllBranches), request);
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+
+        //
+
+
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteBranch(int id)
+        {
+            var branch = await _context.Branches.FindAsync(id);
+
+            if (branch == null)
+                return NotFound(new ApiNotFoundResponse($" Your Branch: id = {id} is not found")); // 400
+
+            _context.Branches.Remove(branch);
+
+            var result = await _context.SaveChangesAsync();
+
+            if (result > 0)
+            {
+                BranchVm vm = branchVm(branch);  // return: user.info by deleted
+                return Ok(vm);
+            };            
+            return BadRequest();
+        }
         private static BranchVm branchVm(Branch br)
         {
             return new BranchVm()

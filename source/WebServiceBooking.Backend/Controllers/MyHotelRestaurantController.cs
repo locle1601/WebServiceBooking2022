@@ -120,7 +120,7 @@ namespace WebServiceBooking.Backend.Controllers
                 MyHotelRestaurantVm vm = MyHotelRestaurantVm(MyHotelRestaurant);  // return: user.info by deleted
                 return Ok(vm);
             };
-            return Ok();
+            return BadRequest(); 
         }
         private static MyHotelRestaurantVm MyHotelRestaurantVm(MyHotelRestaurant hotelRestaurant )
         {
