@@ -45,7 +45,7 @@ namespace WebServiceBooking.Backend.Data
                 }, "Admin@123");
                 if (result.Succeeded)
                 {
-                    var user = await userManager.FindByNameAsync("admin");
+                    var user = await userManager.FindByNameAsync("administrator@localhost");
                     await userManager.AddToRoleAsync(user, administratorRole.Name);
                 }
 

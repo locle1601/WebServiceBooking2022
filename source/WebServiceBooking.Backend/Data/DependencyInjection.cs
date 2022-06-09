@@ -1,3 +1,4 @@
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -5,6 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using WebServiceBooking.Backend.Data.Entities;
 using WebServiceBooking.Backend.IdentityServer;
+using WebServiceBooking.ViewModels.Contents;
+
 namespace WebServiceBooking.Backend.Data
 {
     public static class DependencyInjection
@@ -78,7 +81,8 @@ namespace WebServiceBooking.Backend.Data
                 options.User.RequireUniqueEmail = true;
             });
 
-     
+            services.AddControllersWithViews()
+           .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<RoleCreateRequestValidator>());
 
             services.AddAuthentication()
                .AddLocalApi("Bearer", option =>

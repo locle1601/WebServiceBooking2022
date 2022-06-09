@@ -31,11 +31,37 @@ namespace WebServiceBooking.Backend
         {
             services.AddInfrastructure(Configuration);
 
-            services.AddControllersWithViews()
-            .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<RoleCreateRequestValidator>());
-            services.AddRazorPages();
+           
             services.SetupIdentityServer();
-            services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" }));
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Service backend API V1", Version = "v1" });
+
+
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Type = SecuritySchemeType.OAuth2,
+                    Flows = new OpenApiOAuthFlows
+                    {
+                        Implicit = new OpenApiOAuthFlow
+                        {
+                            AuthorizationUrl = new Uri("https://localhost:5000/connect/authorize"),
+                            Scopes = new Dictionary<string, string> { { "api.Service", "Service backend API V1" } }
+                        },
+                    },
+                });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
+                        },
+                        new List<string>{ "api.Service" }
+                    }
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -63,7 +89,6 @@ namespace WebServiceBooking.Backend
 
             app.UseAuthorization();
 
-            //app.UseCors(KspSpecificOrigins);
 
             app.UseEndpoints(endpoints =>
             {
