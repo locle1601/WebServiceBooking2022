@@ -68,7 +68,7 @@ namespace WebServiceBooking.Backend.Controllers
             if (id == null)
                 return NotFound(new ApiNotFoundResponse($" Your Branch: id = {id} is not found")); // 400
 
-            branch.Id = request.BranchID;
+           // branch.Id = request.BranchID;
             branch.BranchCode = request.BranchCode;
             branch.BranchName = request.BranchName;
             branch.Address = request.Address;

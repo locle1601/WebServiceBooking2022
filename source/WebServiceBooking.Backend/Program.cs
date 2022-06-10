@@ -57,6 +57,7 @@ namespace WebServiceBooking.Backend
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                    
                 });
     }
 }

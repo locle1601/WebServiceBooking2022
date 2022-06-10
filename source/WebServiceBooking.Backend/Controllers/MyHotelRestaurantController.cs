@@ -85,7 +85,7 @@ namespace WebServiceBooking.Backend.Controllers
             if (id == null)
                 return NotFound(new ApiNotFoundResponse($" Your id: {id} is not found")); // 400
 
-            MyHotelRestaurant.Id = request.Id;
+            //MyHotelRestaurant.Id = request.Id;
             MyHotelRestaurant.HotelRestaurantCode = request.HotelRestaurantCode;
             MyHotelRestaurant.HotelRestaurantName = request.HotelRestaurantName;
             MyHotelRestaurant.Address= request.Address;
