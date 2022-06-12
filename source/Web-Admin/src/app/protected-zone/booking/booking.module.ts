@@ -5,6 +5,7 @@ import { CheckinComponent } from './checkin/checkin.component';
 import { CheckoutComponent } from './checkout/checkout.component';
 import { CancelComponent } from './cancel/cancel.component';
 import { AllbookingComponent } from './allbooking/allbooking.component';
+import { BookingRoutingModule } from './booking-routing.module';
 
 
 
@@ -14,11 +15,14 @@ import { AllbookingComponent } from './allbooking/allbooking.component';
     CheckinComponent,
     CheckoutComponent,
     CancelComponent,
-    AllbookingComponent
+    AllbookingComponent,
+
+
 
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    BookingRoutingModule
   ]
 })
 export class BookingModule { }
