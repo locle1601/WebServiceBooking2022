@@ -1,0 +1,10 @@
+From: Web-ServiceBooking <loc.lq.92@gmail.com>
+Date: Thu, 16 Jun 2022 21:49:25 +0700
+Subject: Confirm your email
+Message-Id: <BWJ066G64HU4.RBIL0VP9YG621@admin>
+Sender: Web-ServiceBooking <loc.lq.92@gmail.com>
+To: locle160197@gmail.com
+MIME-Version: 1.0
+Content-Type: text/html; charset=utf-8
+
+Please confirm your account by <a href='https://localhost:5001/Identity/Account/ConfirmEmail?userId=1e5f806d-3e31-40da-806b-402b534fee52&amp;code=Q2ZESjhDbXpJdVNzU3FORHE5bVRXYWVlSEVESUtDbGVmZHJ3TFdRR2d6SVViQVNIclNNclNFTXZoSU1GY3VVUkZ5eFF6Z2p5TGlzMWdMdUxuYmxNS0ZROUUyUXkwUmRla1hYTGZHZmpuOHVob0ozNVA4Q09RaGZ3SDFGQlhheDR2Z2hJT3RRSWtwZG8vek9zaGhHRGFKZ2RGQVdhT09qUU9YcVhGelhmUmFCRCtRbXRJVmpDck5PdXFiWDFza0ZURFl1N3d2aUEzYkZaWjhoUnkySWVnN2lyeVpaeTRjVkZrNnRrVHNQZmJCOXRGb29FRDJLSDNIeGJTN3FVUUFvcDZFRkhnUT09&amp;returnUrl=%2F'>clicking here</a>.

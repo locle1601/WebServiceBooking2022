@@ -12,20 +12,20 @@ namespace WebServiceBooking.Backend.Data.Entities
     {
 
         [MaxLength(50)]
-        [Required]
+
         public string FirstName { get; set; }
 
         [MaxLength(50)]
-        [Required]
+
         public string LastName { get; set; }
 
-        [Required]
+
         public DateTime Dob { get; set; }
 
         public int EmployeeId { get; set; }
          
 
-        [Required]
+
         [DataType("Smalldatetime")]
         public DateTime CreateDate { get; set; }
 

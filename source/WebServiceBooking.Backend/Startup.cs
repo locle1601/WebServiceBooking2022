@@ -1,19 +1,19 @@
-using FluentValidation.AspNetCore;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebServiceBooking.Backend.Data;
-using WebServiceBooking.Backend.Services;
-using WebServiceBooking.ViewModels.Contents;
+using WebServiceBooking.Backend.Data.Entities;
+using WebServiceBooking.SendMail;
 
 namespace WebServiceBooking.Backend
 {
@@ -29,39 +29,58 @@ namespace WebServiceBooking.Backend
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddInfrastructure(Configuration);
-
-           
-            services.SetupIdentityServer();
-
-            services.AddSwaggerGen(c =>
+            services.AddRazorPages();
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Service backend API V1", Version = "v1" });
+                services.AddOptions();                                        // Kích hoạt Options
+                var mailsettings = Configuration.GetSection("MailSettings");  // đọc config
+                services.Configure<MailSettings>(mailsettings);               // đăng ký để Inject
+
+                services.AddTransient<IEmailSender, SendMailService>();        // Đăng ký dịch vụ Mail
 
 
-                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                // Register DbContext
+                services.AddDbContext<WebDBContext>(options =>
                 {
-                    Type = SecuritySchemeType.OAuth2,
-                    Flows = new OpenApiOAuthFlows
-                    {
-                        Implicit = new OpenApiOAuthFlow
-                        {
-                            AuthorizationUrl = new Uri("https://localhost:5000/connect/authorize"),
-                            Scopes = new Dictionary<string, string> { { "api.Service", "Service backend API V1" } }
-                        },
-                    },
+                    // cnn
+                    string connectstring = Configuration.GetConnectionString("ServiceBookingConnection");
+                    options.UseSqlServer(connectstring);
                 });
-                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                //Register Identity
+                //services.AddIdentity<User, IdentityRole>()
+                //    .AddEntityFrameworkStores<WebDBContext>()
+                //    .AddDefaultTokenProviders();
+
+                services.AddDefaultIdentity<User>() // use default  Identity UI 
+                        .AddEntityFrameworkStores<WebDBContext>()
+                        .AddDefaultTokenProviders();
+
+                //  IdentityOptions
+                services.Configure<IdentityOptions>(options =>
                 {
-                    {
-                        new OpenApiSecurityScheme
-                        {
-                            Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
-                        },
-                        new List<string>{ "api.Service" }
-                    }
+                    // config Password
+                    options.Password.RequireDigit = false;
+                    options.Password.RequireLowercase = false;
+                    options.Password.RequireNonAlphanumeric = false;
+                    options.Password.RequireUppercase = false;
+                    options.Password.RequiredLength = 3;
+                    options.Password.RequiredUniqueChars = 1;
+
+                    // config Lockout - khóa user
+                    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                    options.Lockout.MaxFailedAccessAttempts = 5;
+                    options.Lockout.AllowedForNewUsers = true;
+
+                    // config for User.
+                    options.User.AllowedUserNameCharacters =
+                        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+                    options.User.RequireUniqueEmail = true;
+
+                    // config login.
+                    options.SignIn.RequireConfirmedEmail = true;
+                    options.SignIn.RequireConfirmedPhoneNumber = false;
+
                 });
-            });
+            }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -77,31 +96,18 @@ namespace WebServiceBooking.Backend
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-            app.UseStaticFiles();
-
-            app.UseIdentityServer();
-
-            app.UseAuthentication();
 
             app.UseHttpsRedirection();
+            app.UseStaticFiles();
 
             app.UseRouting();
 
-            app.UseAuthorization();
-
+            app.UseAuthentication(); // Restore info user signed
+            app.UseAuthorization(); // Restore info user role
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapDefaultControllerRoute();
                 endpoints.MapRazorPages();
-            });
-
-            app.UseSwagger();
-
-            app.UseSwaggerUI(c =>
-            {
-                c.OAuthClientId("swagger");
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Service backend API V1");
             });
         }
     }

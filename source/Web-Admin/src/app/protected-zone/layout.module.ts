@@ -7,7 +7,10 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 
 import { LayoutRoutingModule } from './layout-routing.module';
 import { LayoutComponent } from './layout.component';
-
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientModule } from '@angular/common/http'
+import { AgGridModule } from 'ag-grid-angular';
 
 
 @NgModule({

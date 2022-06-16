@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebServiceBooking.Backend.Data;
 
 namespace WebServiceBooking.Backend.Pages
 {
@@ -12,9 +13,12 @@ namespace WebServiceBooking.Backend.Pages
     {
         private readonly ILogger<IndexModel> _logger;
 
-        public IndexModel(ILogger<IndexModel> logger)
+        private readonly WebDBContext _context;
+
+        public IndexModel(ILogger<IndexModel> logger, WebDBContext _ct)
         {
             _logger = logger;
+            _context = _ct;
         }
 
         public void OnGet()

@@ -22,4 +22,4 @@ import { LanguageTranslationModule } from './shared/modules/language-translation
     providers: [AuthGuard],
     bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

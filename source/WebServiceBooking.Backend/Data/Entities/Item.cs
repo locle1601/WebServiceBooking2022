@@ -26,6 +26,7 @@ namespace WebServiceBooking.Data.Entities
         public bool isOpenPrice { get; set; }// cho phep dieu chinh gia khong khi ban khong, mac dinh la khong 
 
         [DefaultValue(0)]
+        [DataType("decimal(18,9)")]
         public decimal SalePrice { get; set; }
 
         //public decimal SpurchasePrice { get; set; }
