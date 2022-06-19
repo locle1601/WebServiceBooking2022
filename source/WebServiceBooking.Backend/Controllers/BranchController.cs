@@ -45,6 +45,7 @@ namespace WebServiceBooking.Backend.Controllers
         }
 
         //GETAll
+        [HttpGet]
         public async Task<ActionResult> GetAllBranches()
         {
             var br = await _context.Branches.ToListAsync();
