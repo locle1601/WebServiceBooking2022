@@ -6,10 +6,6 @@ import { CheckoutComponent } from './checkout/checkout.component';
 import { CancelComponent } from './cancel/cancel.component';
 import { AllbookingComponent } from './allbooking/allbooking.component';
 import { BookingRoutingModule } from './booking-routing.module';
-import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http'
-import { AgGridModule } from 'ag-grid-angular';
 
 
 
@@ -20,16 +16,13 @@ import { AgGridModule } from 'ag-grid-angular';
     CheckoutComponent,
     CancelComponent,
     AllbookingComponent,
+
+
+
   ],
   imports: [
     CommonModule,
-    BookingRoutingModule,
-    BrowserModule,
-    HttpClientModule,
-    AgGridModule
-
-  ],
-  providers: [],
-  bootstrap: [AllbookingComponent]
+    BookingRoutingModule
+  ]
 })
 export class BookingModule { }
