@@ -1,8 +1,12 @@
-﻿
-@{
-    ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+﻿@{
+    ViewData["Title"] = "Home Page";
 }
+<div class="text-center">
+    <h1 class="display-4">Service Booking System</h1>
 
-<h1>Index</h1>
-
+    <div class="m-5"></div>
+    @if (User.Identity.IsAuthenticated)
+    {
+<h2><a href="/swagger">Development APIs</a></h2>
+                <h2><a href="/.well-known/openid-configuration">openid-configuration</a></h2>}
+</div>

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,6 +15,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebServiceBooking.Backend.Data;
 using WebServiceBooking.Backend.Data.Entities;
+using WebServiceBooking.Backend.Extensions;
 using WebServiceBooking.Backend.Helpers;
 using WebServiceBooking.SendMail;
 
@@ -21,6 +23,7 @@ namespace WebServiceBooking.Backend
 {
     public class Startup
     {
+        private readonly string SpecificOrigins = "SpecificOrigins";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -31,14 +34,13 @@ namespace WebServiceBooking.Backend
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            
             services.AddOptions();                                        // Kích hoạt Options
             var mailsettings = Configuration.GetSection("MailSettings");  // đọc config
             services.Configure<MailSettings>(mailsettings);               // đăng ký để Inject
+            services.AddTransient<IEmailSender, SendMailService>();       // Đăng ký dịch vụ Mail
 
-            services.AddTransient<IEmailSender, SendMailService>();        // Đăng ký dịch vụ Mail
-
-
-            // Register DbContext
+            //1. Setup entity framework
             if (Configuration.GetValue<bool>("UseInMemoryDatabase"))
                 {
                     services.AddDbContext<WebDBContext>(options =>
@@ -46,7 +48,7 @@ namespace WebServiceBooking.Backend
                 }
                 else
                 {
-                    services.AddDbContext<WebDBContext>(options =>
+                    services.AddDbContextPool<WebDBContext>(options =>
                     {
                         // cnn
                         string connectstring = Configuration.GetConnectionString("ServiceBookingConnection");
@@ -54,17 +56,16 @@ namespace WebServiceBooking.Backend
                     });
                 }
 
-                //Register Identity
-                services.AddIdentity<User, IdentityRole>(options =>
+            //2. Setup idetntity
+            services.AddIdentity<User, IdentityRole>(options =>
                 {
                     options.Password.RequireNonAlphanumeric = false;
                     options.Password.RequireLowercase = false;
                     options.Password.RequireUppercase = false;
                 })
-                    .AddEntityFrameworkStores<WebDBContext>()
-                    .AddDefaultTokenProviders();
-                services.AddTransient<DbInitializer>();
-
+                    .AddEntityFrameworkStores<WebDBContext>();
+                    //.AddDefaultTokenProviders();
+            services.AddTransient<DbInitializer>();
 
             var builder = services.AddIdentityServer(options =>
             {
@@ -73,17 +74,65 @@ namespace WebServiceBooking.Backend
                 options.Events.RaiseFailureEvents = true;
                 options.Events.RaiseSuccessEvents = true;
             })
-            .AddInMemoryApiResources(IdentityServerConfig.Apis)
-            .AddInMemoryClients(IdentityServerConfig.Clients)
-            .AddInMemoryIdentityResources(IdentityServerConfig.Ids)
-            .AddAspNetIdentity<User>()
-            .AddDeveloperSigningCredential();
+                .AddInMemoryApiResources(IdentityServerConfig.Apis)
+                .AddInMemoryApiScopes(IdentityServerConfig.ApiScopes)
+                //.AddInMemoryClients(IdentityServerConfig.Clients)
+                .AddInMemoryClients(Configuration.GetSection("IdentityServer:Clients")) // đọc config từ appsettings  
+                .AddInMemoryIdentityResources(IdentityServerConfig.Ids)
+                .AddAspNetIdentity<User>()
+                .AddDeveloperSigningCredential();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(SpecificOrigins,
+                builder =>
+                {
+                    builder.WithOrigins(Configuration["AllowOrigins"])
+                        .AllowAnyHeader()
+                       // .AllowAnyOrigin()
+                        .AllowAnyMethod();
+                        
+                });
+            });
+
+            services.Configure<IdentityOptions>(options =>
+            {
+                //config Password
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequiredLength = 3;
+                options.Password.RequiredUniqueChars = 1;
+
+                //config Lockout -khóa user
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                options.Lockout.MaxFailedAccessAttempts = 5;
+                options.Lockout.AllowedForNewUsers = true;
+
+                // config for User.
+                options.User.AllowedUserNameCharacters =
+                    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+                options.User.RequireUniqueEmail = true;
+
+                // config login.
+                options.SignIn.RequireConfirmedEmail = true;
+                options.SignIn.RequireConfirmedPhoneNumber = false;
+            });
+
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
+            //services.AddControllersWithViews()
+            //    .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<RoleCreateRequestValidator>());
 
             services.AddAuthentication()
                    .AddLocalApi("Bearer", option =>
                    {
                        option.ExpectedScope = IdentityServerConfig.ApiName;
                    });
+
 
             services.AddAuthorization(options =>
             {
@@ -92,34 +141,8 @@ namespace WebServiceBooking.Backend
                     policy.AddAuthenticationSchemes("Bearer");
                     policy.RequireAuthenticatedUser();
                 });
+
             });
-
-
-            //IdentityOptions
-            services.Configure<IdentityOptions>(options =>
-                {
-                    // config Password
-                    //options.Password.RequireDigit = false;
-                    //options.Password.RequireLowercase = false;
-                    //options.Password.RequireNonAlphanumeric = false;
-                    //options.Password.RequireUppercase = false;
-                    //options.Password.RequiredLength = 3;
-                    //options.Password.RequiredUniqueChars = 1;
-
-                    // config Lockout - khóa user
-                    //options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-                    //options.Lockout.MaxFailedAccessAttempts = 5;
-                    //options.Lockout.AllowedForNewUsers = true;
-
-                    //// config for User.
-                    //options.User.AllowedUserNameCharacters =
-                    //    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
-                    //options.User.RequireUniqueEmail = true;
-
-                    //// config login.
-                    //options.SignIn.RequireConfirmedEmail = true;
-                    //options.SignIn.RequireConfirmedPhoneNumber = false;
-                });
 
             services.AddRazorPages(options =>
             {
@@ -145,7 +168,7 @@ namespace WebServiceBooking.Backend
                     {
                         Implicit = new OpenApiOAuthFlow
                         {
-                            AuthorizationUrl = new Uri("https://localhost:5000/connect/authorize"),
+                            AuthorizationUrl = new Uri("http://localhost:5001/connect/authorize"),
                             Scopes = new Dictionary<string, string> { { IdentityServerConfig.ApiName,IdentityServerConfig.ApiFriendlyName} }
                         },
                     },
@@ -178,14 +201,15 @@ namespace WebServiceBooking.Backend
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
-            app.UseHttpsRedirection();
+            app.UseErrorWrapping();
             app.UseStaticFiles();
 
-            app.UseRouting();
             app.UseIdentityServer();
             app.UseAuthentication(); // Restore info user signed
-            app.UseAuthorization(); // Restore info user role
+            app.UseHttpsRedirection();
+            app.UseRouting();
+            app.UseAuthorization();// Restore info user role
+            app.UseCors(SpecificOrigins);
 
             app.UseSwagger();
             app.UseSwaggerUI(c =>
