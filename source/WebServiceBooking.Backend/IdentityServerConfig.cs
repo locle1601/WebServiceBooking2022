@@ -11,13 +11,20 @@ namespace WebServiceBooking.Backend
         public const string QuickAppClientID = "angular";
         public const string SwaggerClientID = "swaggerui";
 
-
         public static IEnumerable<IdentityResource> Ids =>
           new IdentityResource[]
           {
                 new IdentityResources.OpenId(),
                 new IdentityResources.Profile()
           };
+
+        public static IEnumerable<ApiScope> GetApiScopes()
+        {
+            return new[]
+            {
+                new ApiScope(name:ApiName,   displayName: ApiFriendlyName)
+            };
+        }
 
         public static IEnumerable<ApiResource> Apis =>
             new ApiResource[]
@@ -69,7 +76,7 @@ namespace WebServiceBooking.Backend
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
-                        ApiName
+                        ApiName,
                     }
                 },
                 new Client

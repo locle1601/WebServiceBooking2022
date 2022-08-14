@@ -37,34 +37,32 @@ namespace WebServiceBooking.Backend
 
             services.AddTransient<IEmailSender, SendMailService>();        // Đăng ký dịch vụ Mail
 
-
             // Register DbContext
             if (Configuration.GetValue<bool>("UseInMemoryDatabase"))
+            {
+                services.AddDbContext<WebDBContext>(options =>
+                    options.UseInMemoryDatabase("ServiceBookingDB"));
+            }
+            else
+            {
+                services.AddDbContext<WebDBContext>(options =>
                 {
-                    services.AddDbContext<WebDBContext>(options =>
-                        options.UseInMemoryDatabase("ServiceBookingDB"));
-                }
-                else
-                {
-                    services.AddDbContext<WebDBContext>(options =>
-                    {
-                        // cnn
-                        string connectstring = Configuration.GetConnectionString("ServiceBookingConnection");
-                        options.UseSqlServer(connectstring);
-                    });
-                }
+                    // cnn
+                    string connectstring = Configuration.GetConnectionString("ServiceBookingConnection");
+                    options.UseSqlServer(connectstring);
+                });
+            }
 
-                //Register Identity
-                services.AddIdentity<User, IdentityRole>(options =>
-                {
-                    options.Password.RequireNonAlphanumeric = false;
-                    options.Password.RequireLowercase = false;
-                    options.Password.RequireUppercase = false;
-                })
-                    .AddEntityFrameworkStores<WebDBContext>()
-                    .AddDefaultTokenProviders();
-                services.AddTransient<DbInitializer>();
-
+            //Register Identity
+            services.AddIdentity<User, IdentityRole>(options =>
+            {
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+            })
+                .AddEntityFrameworkStores<WebDBContext>()
+                .AddDefaultTokenProviders();
+            services.AddTransient<DbInitializer>();
 
             var builder = services.AddIdentityServer(options =>
             {
@@ -76,6 +74,7 @@ namespace WebServiceBooking.Backend
             .AddInMemoryApiResources(IdentityServerConfig.Apis)
             .AddInMemoryClients(IdentityServerConfig.Clients)
             .AddInMemoryIdentityResources(IdentityServerConfig.Ids)
+            .AddInMemoryApiScopes(IdentityServerConfig.GetApiScopes())
             .AddAspNetIdentity<User>()
             .AddDeveloperSigningCredential();
 
@@ -146,7 +145,7 @@ namespace WebServiceBooking.Backend
                         Implicit = new OpenApiOAuthFlow
                         {
                             AuthorizationUrl = new Uri("https://localhost:5000/connect/authorize"),
-                            Scopes = new Dictionary<string, string> { { IdentityServerConfig.ApiName,IdentityServerConfig.ApiFriendlyName} }
+                            Scopes = new Dictionary<string, string> { { IdentityServerConfig.ApiName, IdentityServerConfig.ApiFriendlyName } }
                         },
                     },
                 });
