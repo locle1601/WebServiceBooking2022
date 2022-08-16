@@ -34,7 +34,7 @@ namespace WebServiceBooking.Backend
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            
+
             services.AddOptions();                                        // Kích hoạt Options
             var mailsettings = Configuration.GetSection("MailSettings");  // đọc config
             services.Configure<MailSettings>(mailsettings);               // đăng ký để Inject
@@ -42,29 +42,29 @@ namespace WebServiceBooking.Backend
 
             //1. Setup entity framework
             if (Configuration.GetValue<bool>("UseInMemoryDatabase"))
+            {
+                services.AddDbContext<WebDBContext>(options =>
+                    options.UseInMemoryDatabase("ServiceBookingDB"));
+            }
+            else
+            {
+                services.AddDbContextPool<WebDBContext>(options =>
                 {
-                    services.AddDbContext<WebDBContext>(options =>
-                        options.UseInMemoryDatabase("ServiceBookingDB"));
-                }
-                else
-                {
-                    services.AddDbContextPool<WebDBContext>(options =>
-                    {
-                        // cnn
-                        string connectstring = Configuration.GetConnectionString("ServiceBookingConnection");
-                        options.UseSqlServer(connectstring);
-                    });
-                }
+                    // cnn
+                    string connectstring = Configuration.GetConnectionString("ServiceBookingConnection");
+                    options.UseSqlServer(connectstring);
+                });
+            }
 
             //2. Setup idetntity
             services.AddIdentity<User, IdentityRole>(options =>
-                {
-                    options.Password.RequireNonAlphanumeric = false;
-                    options.Password.RequireLowercase = false;
-                    options.Password.RequireUppercase = false;
-                })
+            {
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+            })
                     .AddEntityFrameworkStores<WebDBContext>();
-                    //.AddDefaultTokenProviders();
+            //.AddDefaultTokenProviders();
             services.AddTransient<DbInitializer>();
 
             var builder = services.AddIdentityServer(options =>
@@ -75,7 +75,7 @@ namespace WebServiceBooking.Backend
                 options.Events.RaiseSuccessEvents = true;
             })
                 .AddInMemoryApiResources(IdentityServerConfig.Apis)
-                .AddInMemoryApiScopes(IdentityServerConfig.ApiScopes)
+                .AddInMemoryApiScopes(IdentityServerConfig.GetApiScopes)
                 //.AddInMemoryClients(IdentityServerConfig.Clients)
                 .AddInMemoryClients(Configuration.GetSection("IdentityServer:Clients")) // đọc config từ appsettings  
                 .AddInMemoryIdentityResources(IdentityServerConfig.Ids)
@@ -89,9 +89,9 @@ namespace WebServiceBooking.Backend
                 {
                     builder.WithOrigins(Configuration["AllowOrigins"])
                         .AllowAnyHeader()
-                       // .AllowAnyOrigin()
+                        // .AllowAnyOrigin()
                         .AllowAnyMethod();
-                        
+
                 });
             });
 
@@ -127,6 +127,7 @@ namespace WebServiceBooking.Backend
             //services.AddControllersWithViews()
             //    .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<RoleCreateRequestValidator>());
 
+            // Config Swagger
             services.AddAuthentication()
                    .AddLocalApi("Bearer", option =>
                    {
@@ -156,7 +157,6 @@ namespace WebServiceBooking.Backend
                     }
                 });
             });
-
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -169,7 +169,7 @@ namespace WebServiceBooking.Backend
                         Implicit = new OpenApiOAuthFlow
                         {
                             AuthorizationUrl = new Uri("http://localhost:5001/connect/authorize"),
-                            Scopes = new Dictionary<string, string> { { IdentityServerConfig.ApiName,IdentityServerConfig.ApiFriendlyName} }
+                            Scopes = new Dictionary<string, string> { { IdentityServerConfig.ApiName, IdentityServerConfig.ApiFriendlyName } }
                         },
                     },
                 });

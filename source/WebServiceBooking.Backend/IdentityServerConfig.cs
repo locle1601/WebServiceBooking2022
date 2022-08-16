@@ -24,11 +24,12 @@ namespace WebServiceBooking.Backend
             new ApiResource[]
             {
                 new ApiResource(ApiName, ApiFriendlyName)
+
             };
-        public static IEnumerable<ApiScope> ApiScopes =>
+        public static IEnumerable<ApiScope> GetApiScopes =>
             new ApiScope[]
             {
-                        new ApiScope("api.SBooking", "ServiceBooking API")
+                        new ApiScope("api", "ServiceBooking API")
             };
         //public static IEnumerable<Client> Clients =>
         //    new Client[]
